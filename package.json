@@ -2,9 +2,10 @@
   "name": "madnum",
   "version": "1.0.0",
   "description": "Transform large numbers to length-friendly string",
-  "main": "lib/index.js",
+  "main": "./lib/index.js",
   "author": "LIMPIX31",
   "license": "MIT",
+  "types": "./lib/index.d.ts",
   "repository": {
     "url": "https://github.com/LIMPIX31/madnum.git",
     "type": "git"
