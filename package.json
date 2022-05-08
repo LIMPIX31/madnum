@@ -1,6 +1,6 @@
 {
   "name": "madnum",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Transform large numbers to length-friendly string",
   "main": "./lib/index.js",
   "author": "LIMPIX31",
