@@ -22,5 +22,17 @@
   ],
   "devDependencies": {
     "typescript": "^4.6.4"
-  }
+  },
+  "keywords": [
+    "number",
+    "large",
+    "madnum",
+    "javascript",
+    "typescript",
+    "nodejs",
+    "big number",
+    "pretty number",
+    "number formatter",
+    "formatter"
+  ]
 }
