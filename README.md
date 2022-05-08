@@ -13,6 +13,10 @@ mn(1e6) // 1 M
 
 mn(1.5e6) // 1.5 M
 
+// The "aa" notation example
+
+mn(1e15) // 1 AA
+
 // With fixed precision
 
 mn(1000, 2) // 1.00 K
