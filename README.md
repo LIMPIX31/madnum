@@ -1,6 +1,7 @@
 # Madnum
 Transform large numbers to length-friendly string
-The transform algorithm uses the `"aa" notation`
+
+The transform algorithm uses the **`"aa" notation`**
 ```ts
 import { mn } from 'madnum'
 
