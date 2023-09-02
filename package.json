@@ -24,8 +24,7 @@
     "dist/**/*"
   ],
   "devDependencies": {
-    "typescript": "^5.2.2",
-    "vite-node": "^0.34.3"
+    "typescript": "^5.2.2"
   },
   "keywords": [
     "number",
