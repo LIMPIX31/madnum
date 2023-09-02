@@ -1,8 +1,9 @@
 {
   "name": "madnum",
-  "version": "1.0.1",
+  "version": "2.0.0",
+  "type": "module",
   "description": "Transform large numbers to length-friendly string",
-  "main": "./lib/index.js",
+  "main": "./dist/index.js",
   "author": "LIMPIX31",
   "license": "MIT",
   "types": "./lib/index.d.ts",
@@ -15,13 +16,16 @@
     "url": "https://github.com/LIMPIX31/madnum/issues"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "yarn lib build",
+    "prepack": "yarn build",
+    "postpack": "rm -rf ./dist"
   },
   "files": [
     "lib/**/*"
   ],
   "devDependencies": {
-    "typescript": "^4.6.4"
+    "typescript": "^5.2.2",
+    "vite-node": "^0.34.3"
   },
   "keywords": [
     "number",
@@ -34,5 +38,6 @@
     "pretty number",
     "number formatter",
     "formatter"
-  ]
+  ],
+  "packageManager": "yarn@3.6.3"
 }

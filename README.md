@@ -3,36 +3,43 @@ Transform large numbers to length-friendly string
 
 The transform algorithm uses the **`"aa" notation`**
 ```ts
-import { mn } from 'madnum'
+import { format } from 'madnum'
+// or default import
+import madnum from 'madnum'
 
 // Default usage
 
-mn(1000) // 1 K
-mn(1e6) // 1 M
-mn(1.5e6) // 1.5 M
+format(1000) // 1 K
+format(1e6) // 1 M
+format(1.5e6) // 1.5 M
 
 // The "aa" notation example
 
-mn(1e15) // 1 AA
-
-// With fixed precision
-
-mn(1000, 2) // 1.00 K
-mn(1.2324e6, 3) // 1.232 M
+format(1e15) // 1 AA
 
 // With options
 
-mn(-123114511661, {
-  format: '{num}{unit}',
-  maxfd: 2,
-  lowercase: true,
-  separator: ' '
-}) // -123.11b
+format(123456789, {
+  intl: (num) =>  num.toFixed(2),
+  format: (base, unit) => `${base}${unit.toLowerCase()}`
+}) // 123.46m
+
+// Intl.NumberFormat
+
+const formatter = new Intl.NumberFormat('en', {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 1,
+})
+
+format(-123114511661, {
+  intl: (num) => formatter.format(num),
+  format: (base, unit) => `${base}${unit.toLowerCase()}`
+}) // -123.1b
 
 // Can handle infinity-like numbers
 
-mn(1e1000) // ∞
-mn(Infinity) // ∞
-mn(-Infinity) // -∞
+format(1e1000) // ∞
+format(Infinity) // ∞
+format(-Infinity) // -∞
 
 ```

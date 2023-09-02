@@ -1,8 +1,39 @@
 const units = ['', 'K', 'M', 'B', 'T']
+
 const a = 'A'.charCodeAt(0)
-const log = (n: number, b: number) => Math.log(n) / Math.log(b)
+
+function log(n: number, b: number) {
+  return Math.log(n) / Math.log(b)
+}
+
+export interface MadnumOptions {
+  /**
+   * Custom number formatter
+   */
+  intl?: (num: number) => string
+  /**
+   * Process the number if more than a threshold
+   */
+  threshold?: number
+  /**
+   * string format
+   *
+   * @example Default
+   * (base, unit) => `${base} ${unit}`
+   */
+  format?: (base: string, unit: string) => string
+}
+
+function localize(num: number, options?: MadnumOptions) {
+  if (options?.intl) {
+    return options.intl(num)
+  }
+
+  return num.toString(10)
+}
+
 /**
- * Transform a large number into an pretty output
+ * Transform a large number into a pretty output
  * @example
  * // With dynamic precision
  * mn(1000) // 1 K
@@ -14,82 +45,39 @@ const log = (n: number, b: number) => Math.log(n) / Math.log(b)
  * // Can handle infinity-like numbers
  * mn(Infinity) // ∞
  */
-
-export function mn(number: number, options: MadnumOptions): string
-
-export function mn(number: number, precision?: number): string
-
-export function mn(
-  number: number,
-  precision?: number | MadnumOptions,
-  threshold: number = 1e3
-): string {
-  if (typeof precision === 'number')
-    return format(number, {
-      maxfd: precision,
-      minfd: precision,
-      threshold
-    })
-  else return format(number, precision)
-}
-
-export interface MadnumOptions {
-  /**
-   * Process the number if more than threshold
-   */
-  threshold?: number
-  /**
-   * minimum fraction digits
-   */
-  minfd?: number
-  /**
-   * maximum fraction digits
-   */
-  maxfd?: number
-  /**
-   * transform units to lowecase **1 K** -> **1 k**
-   */
-  lowercase?: boolean
-  /**
-   * string format
-   * default: "{num} {unit}"
-   */
-  format?: string
-  /**
-   * thousands separator
-   */
-  separator?: string
-}
-
-const format = (number: number, options?: MadnumOptions): string => {
-  if (number === 0) return '0'
-  if (!isFinite(number)) return number < 0 ? '-∞' : '∞'
-  const localize = (num: number) => {
-    let localized = Intl.NumberFormat('en', {
-      minimumFractionDigits: options?.minfd ?? 0,
-      maximumFractionDigits: options?.maxfd ?? 2,
-      useGrouping: !!options?.separator
-    }).format(num)
-    if (options?.separator)
-      localized = localized.replaceAll(',', options.separator)
-    return localized
+export function format(number: number, options?: MadnumOptions): string {
+  if (number === 0) {
+    return '0'
   }
-  if (Math.abs(number) < (options?.threshold ?? 1e3)) return localize(number)
+
+  if (!isFinite(number)) {
+    return number < 0 ? '-∞' : '∞'
+  }
+
+  if (Math.abs(number) < (options?.threshold ?? 1e3)) {
+    return localize(number)
+  }
+
   const negative = number < 0 ? (number = -number) : false
+
   const n = Math.floor(log(number, 1e3))
   const m = number / 1e3 ** n
+
   let unit = ''
-  if (n < units.length) unit = units[n]
-  else {
+  if (n < units.length) {
+    unit = units[n]
+  } else {
     const unitInt = n - units.length
     unit =
       String.fromCharCode(unitInt / 26 + a) +
       String.fromCharCode((unitInt % 26) + a)
   }
-  let result = localize(negative ? -m : m)
-  result = (options?.format ?? '{num} {unit}')
-    .replaceAll('{num}', result)
-    .replaceAll('{unit}', unit)
-  if (options?.lowercase) result = result.toLowerCase()
+
+  const localized = localize(negative ? -m : m, options)
+
+  const result = options?.format?.(localized, unit) ?? `${localized} ${unit}`
+
   return result
 }
+
+export default format
