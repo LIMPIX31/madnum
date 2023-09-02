@@ -21,7 +21,7 @@
     "postpack": "rm -rf ./dist"
   },
   "files": [
-    "lib/**/*"
+    "dist/**/*"
   ],
   "devDependencies": {
     "typescript": "^5.2.2",
